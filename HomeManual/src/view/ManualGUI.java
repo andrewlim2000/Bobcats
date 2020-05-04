@@ -6,9 +6,11 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.HeadlessException;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -58,8 +60,9 @@ public class ManualGUI extends JFrame {
 		setLayout(new BorderLayout());
 		createMenuBar();
 		add(displayPanel(), BorderLayout.CENTER);
+		add(folderExplorer(), BorderLayout.WEST);
 	}
-	
+
 	/**
 	 * The menu bar for the app that contains 3 menus:
 	 * File, Edit, and Help.
@@ -129,5 +132,28 @@ public class ManualGUI extends JFrame {
 		JPanel display = new JPanel();
 		
 		return display;
+	}
+	
+	private JPanel folderExplorer() {
+		JPanel panel = new JPanel();
+	    // Figure out where in the filesystem to start displaying
+	    File root = new File(System.getProperty("user.home"));
+
+	    // Create a TreeModel object to represent our tree of files
+	    FileTreeModel model = new FileTreeModel(root);
+
+	    // Create a JTree and tell it to display our model
+	    JTree tree = new JTree();
+	    tree.setModel(model);
+
+	    // The JTree can get big, so allow it to scroll.
+	    JScrollPane scrollpane = new JScrollPane(tree);
+	    
+	    // Display it all in a window and make the window appear\
+	    panel.add(scrollpane, "Center");
+	    panel.setSize(400,600);
+	    panel.setVisible(true);
+		
+		return panel;
 	}
 }
